@@ -1,0 +1,54 @@
+{
+  "permission": {
+    "tools": {
+      "mcp__chrome-devtools__*": {
+        "allow": true
+      },
+      "mcp__context7__*": {
+        "allow": true
+      },
+      "mcp__engram__*": {
+        "allow": true
+      }
+    }
+  },
+  "mcp": {
+    "servers": {
+      "chrome-devtools": {
+        "type": "local",
+        "enabled": true,
+        "command": "npx",
+        "args": [
+          "-y",
+          "chrome-devtools-mcp@latest"
+        ]
+      },
+      "context7": {
+        "type": "local",
+        "enabled": true,
+        "command": "npx",
+        "args": [
+          "-y",
+          "@upstash/context7-mcp@latest"
+        ]
+      },
+      "engram": {
+        "type": "local",
+        "enabled": true,
+        "command": "engram",
+        "args": [
+          "mcp"
+        ]
+      },
+      "nx-mcp": {
+        "type": "local",
+        "enabled": true,
+        "command": [
+          "npx",
+          "nx",
+          "mcp"
+        ]
+      }
+    }
+  }
+}

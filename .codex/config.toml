@@ -1,0 +1,26 @@
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+
+[features]
+hooks = true
+multi_agent = true
+
+[mcp_servers.chrome-devtools]
+command = "npx"
+args = [ "-y", "chrome-devtools-mcp@latest" ]
+
+[mcp_servers.context7]
+command = "npx"
+args = [ "-y", "@upstash/context7-mcp@latest" ]
+
+[mcp_servers.engram]
+command = "engram"
+args = [ "mcp" ]
+
+[mcp_servers.nx-mcp]
+command = "npx"
+args = [ "nx", "mcp" ]
+
+[agents.ci-monitor-subagent]
+description = "CI helper for /monitor-ci. Fetches CI status, retrieves fix details, or updates self-healing fixes. Executes one MCP tool call and returns the result."
+config_file = "agents/ci-monitor-subagent.toml"

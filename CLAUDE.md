@@ -222,3 +222,53 @@ This handles everything: starts Postgres + Redis (auto-detects local services vs
 - `tsconfig.base.json` - Base TypeScript configuration
 - `package.json` - Root package with workspace definitions
 - `.cursor/rules/` - Detailed development guidelines and best practices
+
+<!-- forge:section:agents-import:1.0.0 -->
+@AGENTS.md
+<!-- /forge:section:agents-import -->
+
+<!-- forge:section:claude-specifics:1.0.0 -->
+## Claude Code specifics
+
+- **Memory**: Engram MCP plugin — install via `claude plugin install engram`. Plugin handles session lifecycle hooks (start, stop, compaction recovery).
+- **Auto-memory**: DISABLED when Engram detected. Set `CLAUDE_CODE_DISABLE_AUTO_MEMORY=1` in your shell. Engram is the sole memory source.
+- **Slash entrypoint**: `/sdd` — runs `scripts/sdd-preflight.sh` then offers 5 modes (plan, implement, research, bugfix, bootstrap). Never write code without going through `/sdd` first.
+- **Subagent definitions**: `.claude/agents/*.md` — each lists explicit `mcp__*` allowlist for tool inheritance.
+- **Hooks**: `.claude/settings.json` enforces engram session events. Do not remove without replacing.
+<!-- /forge:section:claude-specifics -->
+
+<!-- forge:section:orchestrator-identity:1.1.0 -->
+## You Are the Orchestrator
+
+You coordinate this project's SDD workflow. You are the ONLY entity that
+can dispatch sub-agents via Agent(). Sub-agents CANNOT spawn sub-agents.
+
+Delegate, never implement. Full dispatch protocol, wave execution, gates,
+and escalation rules are in `.claude/rules/orchestrator-dispatch.md`.
+<!-- /forge:section:orchestrator-identity -->
+
+
+<!-- nx configuration start-->
+<!-- Leave the start & end comments to automatically receive updates. -->
+
+## General Guidelines for working with Nx
+
+- For navigating/exploring the workspace, invoke the `nx-workspace` skill first - it has patterns for querying projects, targets, and dependencies
+- When running tasks (for example build, lint, test, e2e, etc.), always prefer running the task through `nx` (i.e. `nx run`, `nx run-many`, `nx affected`) instead of using the underlying tooling directly
+- Prefix nx commands with the workspace's package manager (e.g., `pnpm nx build`, `npm exec nx test`) - avoids using globally installed CLI
+- You have access to the Nx MCP server and its tools, use them to help the user
+- For Nx plugin best practices, check `node_modules/@nx/<plugin>/PLUGIN.md`. Not all plugins have this file - proceed without it if unavailable.
+- NEVER guess CLI flags - always check nx_docs or `--help` first when unsure
+
+## Scaffolding & Generators
+
+- For scaffolding tasks (creating apps, libs, project structure, setup), ALWAYS invoke the `nx-generate` skill FIRST before exploring or calling MCP tools
+
+## When to use nx_docs
+
+- USE for: advanced config options, unfamiliar flags, migration guides, plugin configuration, edge cases
+- DON'T USE for: basic generator syntax (`nx g @nx/react:app`), standard commands, things you already know
+- The `nx-generate` skill handles generator discovery internally - don't call nx_docs just to look up generator syntax
+
+
+<!-- nx configuration end-->
